@@ -23,7 +23,7 @@ public class DbConfig implements Serializable {
     /**
      * 是否使用ssh
      */
-    private Boolean sshEnable;
+    private boolean sshEnable;
 
     /**
      * ssh主机
@@ -84,11 +84,11 @@ public class DbConfig implements Serializable {
         this.password = password;
     }
 
-    public Boolean getSshEnable() {
+    public boolean getSshEnable() {
         return sshEnable;
     }
 
-    public void setSshEnable(Boolean sshEnable) {
+    public void setSshEnable(boolean sshEnable) {
         this.sshEnable = sshEnable;
     }
 
