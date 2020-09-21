@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.levi.export.database.word.controller.MainController">
+    <children>
+        <Label layoutX="25.0" layoutY="33.0" text="主    机">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="host" layoutX="100.0" layoutY="31.0" text="127.0.0.1">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+
+        <Label layoutX="25.0" layoutY="73.0" text="端    口" >
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+
+        <TextField fx:id="port" layoutX="100.0" layoutY="69.0" text="3306">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+
+        <Label layoutX="25.0" layoutY="113.0" text="类    型">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+
+        <ChoiceBox fx:id="dbType" layoutX="100.0" layoutY="111.0" prefHeight="23.0" prefWidth="189.0"/>
+
+        <Label layoutX="25.0" layoutY="155.0" text="用户名">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+
+        <TextField fx:id="username" layoutX="100.0" layoutY="149.0" text="root">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+
+        <Label layoutX="25.0" layoutY="195.0" text="密    码">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+
+        <PasswordField fx:id="password" layoutX="100.0" layoutY="191.0" text="root">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </PasswordField>
+
+        <Label fx:id="dbLabel" layoutX="25.0" layoutY="238.0" text="数据库">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+
+        <ChoiceBox fx:id="dbName" layoutX="100.0" layoutY="237.0" onMouseClicked="#dbTouch" prefHeight="23.0"
+                   prefWidth="189.0"/>
+
+        <Label layoutX="20.0" layoutY="282.0" text="文档存储目录">
+            <font>
+                <Font size="12.0"/>
+            </font>
+        </Label>
+
+        <Button fx:id="choisePath" layoutX="100.0" layoutY="281.0" mnemonicParsing="false" onAction="#selectDirPath"
+                prefHeight="23.0" prefWidth="70.0" text="选择路径"/>
+
+        <Label fx:id="dirPath" layoutX="180.0" layoutY="282.0" text="未选择">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+
+        <Label layoutX="320.0" layoutY="38.0" text="使用SSH通道">
+            <font>
+                <Font size="12.0"/>
+            </font>
+        </Label>
+        <fx:define>
+            <ToggleGroup fx:id="sshSwitch"/>
+        </fx:define>
+        <RadioButton fx:id="sshOff" layoutX="400.0" layoutY="23.0" prefWidth="140" prefHeight="40"
+                     toggleGroup="$sshSwitch"
+                     text="否" selected="true"/>
+        <RadioButton fx:id="sshOn" layoutX="450.0" layoutY="23.0" prefWidth="140" prefHeight="40"
+                     toggleGroup="$sshSwitch"
+                     text="是"/>
+
+        <Label layoutX="320.0" layoutY="73.0" text="SSH主机">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="sshHost" layoutX="400.0" layoutY="69.0" prefWidth="180">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+
+        <Label layoutX="320.0" layoutY="113.0" text="SSH端口">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="sshPort" layoutX="400.0" layoutY="109.0" prefWidth="180">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+
+        <Label layoutX="320.0" layoutY="153.0" text="SSH用户名">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="sshUsername" layoutX="400.0" layoutY="149.0" prefWidth="180">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+
+        <Label layoutX="320.0" layoutY="193.0" text="SSH密码">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="sshPassword" layoutX="400.0" layoutY="191.0" prefWidth="180">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+
+        <Button fx:id="testCon" layoutX="200.0" layoutY="344.0" mnemonicParsing="false" onAction="#testCon"
+                text="测试连接"/>
+
+        <Button fx:id="exportWord" layoutX="300.0" layoutY="344.0" mnemonicParsing="false" onAction="#exportDoc"
+                text="导出文档"/>
+
+    </children>
+</Pane>
