@@ -54,7 +54,9 @@ public class SqlUtil {
         if (assignedPort == null || assignedPort == 0) {
             return null;
         }
-        host = "localhost:" + assignedPort + "/" + host;
+//        host = "localhost:" + assignedPort + "/" + host;
+        host = "localhost";
+        port = assignedPort;
         return getConnectionByMysql(host, port, username, password);
     }
 
@@ -92,7 +94,8 @@ public class SqlUtil {
             System.out.println("ssh服务打印：" + session.getServerVersion());
 
             //  正向代理 端口映射 转发
-            int lport = 1117;
+//            int lport = 1117;
+            int lport = CommonUtil.getRandomInt(1000,1300);
             int assignedPort = session.setPortForwardingL(lport, host, port);
             return assignedPort;
         } catch (JSchException e) {

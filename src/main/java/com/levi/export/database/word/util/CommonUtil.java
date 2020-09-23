@@ -6,10 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class CommonUtil {
     public static boolean isEmpty(String s) {
@@ -140,5 +137,31 @@ public class CommonUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 得到用户目录
+     * @return
+     */
+    public static String getUserHomeDir(){
+        String dir = System.getProperties().getProperty("user.home");
+        return dir;
+    }
+
+    /**
+     * 得到随机数
+     * @param start
+     * @param end
+     * @return
+     */
+    public static int getRandomInt(int start,int end){
+        int min=Math.min(start,end);
+        int max=Math.max(start,end);
+        Random random = new Random();
+        return random.nextInt(max)%(max-min+1) + min;
+    }
+
+    public static void main(String[] args) {
+        getUserHomeDir();
     }
 }

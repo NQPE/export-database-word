@@ -33,7 +33,7 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
     private static final String DB_COLUMN_STRUCTURE_SQL = "SELECT ordinal_position as columnOrdinalPosition,column_name as columnName, column_type as columnType" +
             ", column_key as columnKey, extra as columnExtra,is_nullable as columnIsNullable, column_default as columnDefault, column_comment as columnComment" +
             ",data_type as columnType,character_maximum_length as columnLength"
-            + "FROM information_schema.columns WHERE table_schema = '%s' and table_name= '%s' ";
+            + " FROM information_schema.columns WHERE table_schema = '%s' and table_name= '%s' ";
 
     @Override
     public Connection getConnection(DbConfig dbConfig) {
@@ -50,8 +50,7 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
     }
 
     @Override
-    public String exportDatabase2Word(DbConfig dbConfig) {
-        Connection connection = getConnection(dbConfig);
+    public String exportDatabase2Word(Connection connection,DbConfig dbConfig) {
         if (connection == null) {
             return "配置错误";
         }
@@ -59,18 +58,20 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
         if (!checkExportWordParam(dbConfig)) {
             return "配置错误";
         }
-        String tableStructureSql=String.format(DB_TABLE_STRUCTURE_SQL,dbConfig.getDbName());
+        String tableStructureSql = String.format(DB_TABLE_STRUCTURE_SQL, dbConfig.getDbName());
         List<TableStructure> tableStructureList = getTableStructureList(connection, tableStructureSql);
-        if (CommonUtil.isEmpty(tableStructureList)){
+        if (CommonUtil.isEmpty(tableStructureList)) {
             return "数据库结构为空";
         }
-        for (TableStructure tableStructure : tableStructureList) {
-            String columnStructureSql=String.format(DB_COLUMN_STRUCTURE_SQL,dbConfig.getDbName(),tableStructure.getTableName());
+        for (int i = 0; i < tableStructureList.size(); i++) {
+            TableStructure tableStructure=tableStructureList.get(i);
+            String columnStructureSql = String.format(DB_COLUMN_STRUCTURE_SQL, dbConfig.getDbName(), tableStructure.getTableName());
             List<ColumnStructure> columnStructureList = getColumnStructureList(connection, columnStructureSql);
             tableStructure.setTableColumnStructureList(columnStructureList);
+            tableStructure.setTableNo(i+1+"");
         }
-        String path=dbConfig.getWordSavePath()+"/"+WORD_FILE_NAME;
-        WordUtil.exportDB2Word(tableStructureList,path);
+        String path = dbConfig.getWordSavePath() + "/" + WORD_FILE_NAME;
+        WordUtil.exportDB2Word(getTableStructureRenderDataList(tableStructureList), path);
         return null;
     }
 

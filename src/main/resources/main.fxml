@@ -21,7 +21,7 @@
             </font>
         </TextField>
 
-        <Label layoutX="25.0" layoutY="73.0" text="端    口" >
+        <Label layoutX="25.0" layoutY="73.0" text="端    口">
             <font>
                 <Font size="14.0"/>
             </font>
@@ -155,4 +155,15 @@
                 text="导出文档"/>
 
     </children>
+    <Pane fx:id="loadingParent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+          prefHeight="400.0" prefWidth="600.0">
+        <children>
+            <ProgressIndicator fx:id="loadingProgress" layoutX="300.0" layoutY="193.0"/>
+            <Label layoutX="360.0" layoutY="210.0" text="加载中...">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+        </children>
+    </Pane>
 </Pane>

@@ -19,7 +19,7 @@ public interface DB2WordService {
      * @param dbConfig
      *
      */
-    String exportDatabase2Word(DbConfig dbConfig);
+    String exportDatabase2Word(Connection connection,DbConfig dbConfig);
 
     /**
      * 得到数据库list

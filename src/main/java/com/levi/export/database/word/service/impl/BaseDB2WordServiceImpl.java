@@ -1,10 +1,12 @@
 package com.levi.export.database.word.service.impl;
 
+import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.RowRenderData;
 import com.deepoove.poi.data.TextRenderData;
 import com.levi.export.database.word.domain.ColumnStructure;
 import com.levi.export.database.word.domain.DbConfig;
 import com.levi.export.database.word.domain.TableStructure;
+import com.levi.export.database.word.domain.TableStructureRenderData;
 import com.levi.export.database.word.service.DB2WordService;
 import com.levi.export.database.word.util.CommonUtil;
 import com.levi.export.database.word.util.SqlUtil;
@@ -172,11 +174,55 @@ public abstract class BaseDB2WordServiceImpl implements DB2WordService {
 
 
     /**
+     * 得到渲染到docx的数据
+     *
+     * @param list
+     * @return
+     */
+    protected List<TableStructureRenderData> getTableStructureRenderDataList(List<TableStructure> list) {
+        List<TableStructureRenderData> tableStructureRenderDataList = new ArrayList<>();
+        if (CommonUtil.isEmpty(list)) {
+            return tableStructureRenderDataList;
+        }
+        for (TableStructure tableStructure : list) {
+            TableStructureRenderData item = new TableStructureRenderData();
+            item.setTableName(tableStructure.getTableName());
+            item.setTableEngine(tableStructure.getTableEngine());
+            item.setTableCollation(tableStructure.getTableCollation());
+            item.setTableType(tableStructure.getTableType());
+            item.setTableComment(tableStructure.getTableComment());
+            item.setTableCreateOptions(tableStructure.getTableCreateOptions());
+            item.setTableNo(tableStructure.getTableNo());
+            //字段表格对象
+            item.setTableColumnTableRenderData(getColumnTableRenderData(tableStructure.getTableColumnStructureList()));
+            tableStructureRenderDataList.add(item);
+        }
+        return tableStructureRenderDataList;
+    }
+
+    /**
+     * 得到字段render
+     *
+     * @param list
+     * @return
+     */
+    private MiniTableRenderData getColumnTableRenderData(List<ColumnStructure> list) {
+        //防止空指针
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        RowRenderData columnHeader = getTableColumnHeader();
+        List<RowRenderData> columnList = getWordColumnRowRenderDataList(list);
+        MiniTableRenderData columnTable = new MiniTableRenderData(columnHeader, columnList);
+        return columnTable;
+    }
+
+    /**
      * table的字段列表表头
      *
      * @return RowRenderData
      */
-    protected RowRenderData getTableColumnHeader() {
+    private RowRenderData getTableColumnHeader() {
         RowRenderData header = RowRenderData.build(
                 new TextRenderData("序号", WordUtil.getHeaderStyle()),
                 new TextRenderData("字段名称", WordUtil.getHeaderStyle()),
@@ -185,7 +231,7 @@ public abstract class BaseDB2WordServiceImpl implements DB2WordService {
                 new TextRenderData("长度", WordUtil.getHeaderStyle()),
                 new TextRenderData("允许空", WordUtil.getHeaderStyle()),
                 new TextRenderData("缺省值", WordUtil.getHeaderStyle()));
-        header.setStyle(WordUtil.getHeaderTableStyle());
+        header.setRowStyle(WordUtil.getHeaderTableStyle());
         return header;
     }
 
@@ -195,7 +241,7 @@ public abstract class BaseDB2WordServiceImpl implements DB2WordService {
      * @param list
      * @return
      */
-    protected List<RowRenderData> getWordColumnRowRenderDataList(List<ColumnStructure> list) {
+    private List<RowRenderData> getWordColumnRowRenderDataList(List<ColumnStructure> list) {
         List<RowRenderData> result = new ArrayList<>();
         if (CommonUtil.isEmpty(list)) {
             return result;
@@ -212,7 +258,7 @@ public abstract class BaseDB2WordServiceImpl implements DB2WordService {
                     new TextRenderData(item.getColumnDefault() + "")
             );
             if (i % 2 == 0) {
-                row.setStyle(WordUtil.getBodyTableStyle());
+                row.setRowStyle(WordUtil.getBodyTableStyle());
                 result.add(row);
             } else {
                 result.add(row);

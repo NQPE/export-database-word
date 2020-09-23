@@ -1,12 +1,14 @@
 package com.levi.export.database.word.domain;
 
+import com.deepoove.poi.data.MiniTableRenderData;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * 表结构
+ * 表结构渲染对象
  */
-public class TableStructure implements Serializable {
+public class TableStructureRenderData implements Serializable {
     /**
      * 表名称
      */
@@ -39,9 +41,9 @@ public class TableStructure implements Serializable {
     private String tableNo;
 
     /**
-     * 表字段列表
+     * 表字段table渲染
      */
-    List<ColumnStructure> tableColumnStructureList;
+    MiniTableRenderData tableColumnTableRenderData;
 
     public String getTableName() {
         return tableName;
@@ -99,11 +101,11 @@ public class TableStructure implements Serializable {
         this.tableNo = tableNo;
     }
 
-    public List<ColumnStructure> getTableColumnStructureList() {
-        return tableColumnStructureList;
+    public MiniTableRenderData getTableColumnTableRenderData() {
+        return tableColumnTableRenderData;
     }
 
-    public void setTableColumnStructureList(List<ColumnStructure> tableColumnStructureList) {
-        this.tableColumnStructureList = tableColumnStructureList;
+    public void setTableColumnTableRenderData(MiniTableRenderData tableColumnTableRenderData) {
+        this.tableColumnTableRenderData = tableColumnTableRenderData;
     }
 }
