@@ -65,7 +65,7 @@
             </font>
         </PasswordField>
 
-        <Label fx:id="dbLabel" layoutX="25.0" layoutY="238.0" text="数据库">
+        <Label layoutX="25.0" layoutY="238.0" text="数据库">
             <font>
                 <Font size="14.0"/>
             </font>
@@ -80,7 +80,7 @@
             </font>
         </Label>
 
-        <Button fx:id="choisePath" layoutX="100.0" layoutY="281.0" mnemonicParsing="false" onAction="#selectDirPath"
+        <Button layoutX="100.0" layoutY="281.0" mnemonicParsing="false" onAction="#selectDirPath"
                 prefHeight="23.0" prefWidth="70.0" text="选择路径"/>
 
         <Label fx:id="dirPath" layoutX="180.0" layoutY="282.0" text="未选择">

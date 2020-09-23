@@ -17,6 +17,7 @@ public class SqlUtil {
 
     /**
      * mysql链接
+     *
      * @param host
      * @param port
      * @param username
@@ -24,7 +25,7 @@ public class SqlUtil {
      * @return
      */
     public static Connection getConnectionByMysql(String host, Integer port, String username, String password) {
-        String url=String.format("jdbc:mysql://%s:%d", host, port);
+        String url = String.format("jdbc:mysql://%s:%d", host, port);
         try {
             return DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
@@ -35,6 +36,7 @@ public class SqlUtil {
 
     /**
      * ssh mysql链接
+     *
      * @param host
      * @param port
      * @param username
@@ -47,24 +49,25 @@ public class SqlUtil {
      */
     public static Connection getConnectionToSSHByMysql(String host, Integer port, String username, String password,
                                                        String sshHost, Integer sshPort, String sshUsername, String sshPassword) {
-        Integer assignedPort=getSshAssignedPort(host,port,sshHost,sshPort,sshUsername,sshPassword);
+        Integer assignedPort = getSshAssignedPort(host, port, sshHost, sshPort, sshUsername, sshPassword);
         System.out.println("assigned_port:" + assignedPort);
-        if (assignedPort==null||assignedPort==0){
+        if (assignedPort == null || assignedPort == 0) {
             return null;
         }
         host = "localhost:" + assignedPort + "/" + host;
-        return getConnectionByMysql(host,port,username,password);
+        return getConnectionByMysql(host, port, username, password);
     }
 
     /**
      * 获取ssh端口
+     *
      * @param sshHost
      * @param sshPort
      * @param sshUsername
      * @param sshPassword
      * @return
      */
-    public static Integer getSshAssignedPort(String host, Integer port,String sshHost, Integer sshPort, String sshUsername, String sshPassword){
+    public static Integer getSshAssignedPort(String host, Integer port, String sshHost, Integer sshPort, String sshUsername, String sshPassword) {
         try {
             JSch jsch = new JSch();
             Session session = null;
@@ -89,13 +92,13 @@ public class SqlUtil {
             System.out.println("ssh服务打印：" + session.getServerVersion());
 
             //  正向代理 端口映射 转发
-            int lport=1117;
+            int lport = 1117;
             int assignedPort = session.setPortForwardingL(lport, host, port);
             return assignedPort;
         } catch (JSchException e) {
             e.printStackTrace();
         }
-       return null;
+        return null;
     }
 
     public static ResultSet getResultSet(Connection conn, String sql) {
@@ -106,5 +109,22 @@ public class SqlUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 判断查询结果集中是否存在某列
+     *
+     * @param rs         查询结果集
+     * @param columnName 列名
+     * @return true 存在; false 不存咋
+     */
+    public static boolean isExistColumn(ResultSet rs, String columnName) {
+        try {
+            if (rs.findColumn(columnName) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+        }
+        return false;
     }
 }

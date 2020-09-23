@@ -15,10 +15,11 @@ public interface DB2WordService {
     Connection getConnection(DbConfig dbConfig);
 
     /**
-     * 导入数据库为word
+     * 导出数据库为word
      * @param dbConfig
+     *
      */
-    void exportDatabase2Word(DbConfig dbConfig);
+    String exportDatabase2Word(DbConfig dbConfig);
 
     /**
      * 得到数据库list
