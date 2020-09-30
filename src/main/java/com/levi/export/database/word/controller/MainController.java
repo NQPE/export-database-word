@@ -195,15 +195,17 @@ public class MainController implements Initializable {
             return;
         }
         loadingParent.setVisible(true);
+        //存储记录
+        saveDbConfig(getDbConfig());
         ThreadPoolsUtil.exec(new Runnable() {
             @Override
             public void run() {
                 //导出word
-                getDB2WordService().exportDatabase2Word(getDbConnection(), getDbConfig());
+                String res=getDB2WordService().exportDatabase2Word(getDbConnection(), getDbConfig());
                 //切回主线程
                 Platform.runLater(() -> {
-                    showAlerts("导出完成");
                     loadingParent.setVisible(false);
+                    showAlerts(res==null?"导出完成":res);
                 });
 
             }

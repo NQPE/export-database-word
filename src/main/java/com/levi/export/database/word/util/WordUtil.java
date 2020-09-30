@@ -7,6 +7,7 @@ import com.levi.export.database.word.domain.TableStructureRenderData;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  * word文档工具
  */
 public class WordUtil {
-    private static final String TEMPLATE_DOSX_PATH = "template.docx";
+    private static final String TEMPLATE_DOSX_PATH = "/template.docx";
 
     /**
      * 导出数据库表结构为word
@@ -27,14 +28,13 @@ public class WordUtil {
         if (CommonUtil.isEmpty(tableStructureList)) {
             return "导出数据为空";
         }
-        String filePath = ClassLoader.getSystemResource(TEMPLATE_DOSX_PATH).getFile();
-        File file = new File(filePath);
-        if (!file.exists()) {
+        InputStream templateInputStream=WordUtil.class.getResourceAsStream(TEMPLATE_DOSX_PATH);
+        if (templateInputStream==null){
             return "模板未找到";
         }
         Map<String, Object> data = new HashMap<>();
         data.put("tableStructureList", tableStructureList);
-        XWPFTemplate template = XWPFTemplate.compile(file).render(data);
+        XWPFTemplate template = XWPFTemplate.compile(templateInputStream).render(data);
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(path);

@@ -71,8 +71,8 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
             tableStructure.setTableNo(i+1+"");
         }
         String path = dbConfig.getWordSavePath() + "/" + WORD_FILE_NAME;
-        WordUtil.exportDB2Word(getTableStructureRenderDataList(tableStructureList), path);
-        return null;
+        String res=WordUtil.exportDB2Word(getTableStructureRenderDataList(tableStructureList), path);
+        return res;
     }
 
     @Override
