@@ -7,21 +7,27 @@
 
 ## 使用
 方法1：下载此项目  运行Main类中的main方法 即可
+
 （如果执行报错，就把项目mvn clean一下再运行执行）
 
-方法2：直接下载/jar/export-database-word-1.0-SNAPSHOT-jar-with-dependencies.jar包 
-本地环境安装jdk8的java运行环境 在下载的jar包路径下命令行执行
+方法2：[可运行jar包直接下载！](http://forsnow.xin/export-database-word-1.0-SNAPSHOT-jar-with-dependencies.jar)
+
+本地环境安装jdk8的java运行环境 在下载的jar包路径下执行命令行
+
 java -jar export-database-word-1.0-SNAPSHOT-jar-with-dependencies.jar
+
 （如果配置了环境变量 双击jar包选择打开方式用java打开也可直接运行）
+
+（也可以下载项目代码打包为可执行jar包,具体参考 [项目打包为可执行jar包操作步骤](#jar) ）
 
 方法3：打包为exe运行文件 直接运行即可（待研究完善）
 
 
-## 工具类打包为可执行jar操作步骤
+## <a name="jar">项目打包为可执行jar包操作步骤</a>
 
-使用maven的maven-assembly-plugin(pom文件中已设置)插件打包为可执行jar([图片链接地址](http://forsnow.xin/data2word-example3.png))
- 
- 
+使用maven的maven-assembly-plugin(pom文件中已设置)插件打包为可执行jar包([图片链接地址](http://forsnow.xin/data2word-example3.png))
+
+
  ![](http://forsnow.xin/data2word-example3.png)
 
 ## 项目运行截图 

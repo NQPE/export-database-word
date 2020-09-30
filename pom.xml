@@ -58,11 +58,12 @@
         <!-- 配置资源文件 -->
         <resources>
             <resource>
-                <directory>src/main/java</directory>
+                <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.fxml</include>
                     <include>**/*.properties</include>
                     <include>**/*.jpg</include>
+                    <include>**/*.docx</include>
                 </includes>
             </resource>
         </resources>
