@@ -227,12 +227,12 @@ public class MainController implements Initializable {
                 Connection connection = getDbConnection(true);
                 //切回主线程
                 Platform.runLater(() -> {
+                    loadingParent.setVisible(false);
                     if (connection == null) {
                         showAlerts(FAIL_CONNECTION);
                         return;
                     }
                     showAlerts(SUCCESS_CONNECTION);
-                    loadingParent.setVisible(false);
                 });
 
             }
