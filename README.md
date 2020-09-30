@@ -49,6 +49,8 @@ java -jar export-database-word-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 2.作者联系邮箱 418995952@qq.com
 
+3.[码云同步地址](https://gitee.com/nqpe/export-database-word)
+
 ## 参考项目
 
 https://github.com/msuno/export-database-structure
