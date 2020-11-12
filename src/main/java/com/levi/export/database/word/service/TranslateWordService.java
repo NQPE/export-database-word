@@ -1,6 +1,6 @@
 package com.levi.export.database.word.service;
 
-public interface TranslateWord {
+public interface TranslateWordService {
     /**
      * 翻译接口
      * @param content 翻译内容

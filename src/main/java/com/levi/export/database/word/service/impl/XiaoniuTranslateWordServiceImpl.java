@@ -1,7 +1,7 @@
 package com.levi.export.database.word.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.levi.export.database.word.service.TranslateWord;
+import com.levi.export.database.word.service.TranslateWordService;
 import com.levi.export.database.word.util.CommonUtil;
 import com.levi.export.database.word.util.JsonUtil;
 import com.levi.export.database.word.util.OkHttpUtil;
@@ -17,7 +17,7 @@ import java.util.Map;
  * 小牛翻译
  * https://niutrans.com/documents/develop/develop_text/free#accessMode
  */
-public class XiaoniuTranslateWordImpl implements TranslateWord {
+public class XiaoniuTranslateWordServiceImpl implements TranslateWordService {
     private static String API_KEY = "小牛翻译的apikey";
 //    private static String XIAONIU_URL = "http://free.niutrans.com/NiuTransServer/translation";
     private static String XIAONIU_URL = "http://api.niutrans.com/NiuTransServer/translation";
@@ -97,8 +97,8 @@ public class XiaoniuTranslateWordImpl implements TranslateWord {
     }
 
     public static void main(String[] args) throws Exception {
-        TranslateWord translateWord = new XiaoniuTranslateWordImpl();
+        TranslateWordService translateWordService = new XiaoniuTranslateWordServiceImpl();
 
-        System.out.println(translateWord.translateWord("user_id", "en", "zh"));
+        System.out.println(translateWordService.translateWord("user_id", "en", "zh"));
     }
 }

@@ -3,7 +3,6 @@ package com.levi.export.database.word.service.impl;
 import com.levi.export.database.word.domain.ColumnStructure;
 import com.levi.export.database.word.domain.DbConfig;
 import com.levi.export.database.word.domain.TableStructure;
-import com.levi.export.database.word.service.TranslateWord;
 import com.levi.export.database.word.util.CommonUtil;
 import com.levi.export.database.word.util.SqlUtil;
 import com.levi.export.database.word.util.WordUtil;
