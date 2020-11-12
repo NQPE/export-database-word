@@ -3,6 +3,7 @@ package com.levi.export.database.word.service.impl;
 import com.levi.export.database.word.domain.ColumnStructure;
 import com.levi.export.database.word.domain.DbConfig;
 import com.levi.export.database.word.domain.TableStructure;
+import com.levi.export.database.word.service.TranslateWord;
 import com.levi.export.database.word.util.CommonUtil;
 import com.levi.export.database.word.util.SqlUtil;
 import com.levi.export.database.word.util.WordUtil;
@@ -10,13 +11,14 @@ import com.levi.export.database.word.util.WordUtil;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
     /**
      * word文件名称
      */
-    private static final String WORD_FILE_NAME = "数据库表结构(MYSQL).docx";
+    private static final String WORD_FILE_NAME = "数据库表结构(MYSQL)";
     /**
      * 查询数据库名称列表 sql
      */
@@ -70,7 +72,9 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
             tableStructure.setTableColumnStructureList(columnStructureList);
             tableStructure.setTableNo(i+1+"");
         }
-        String path = dbConfig.getWordSavePath() + "/" + WORD_FILE_NAME;
+        postHandleListTableStructure(tableStructureList);
+        String time=CommonUtil.date2Str(new Date(),"yyyyMMddHHmm");
+        String path = dbConfig.getWordSavePath() + "/" + WORD_FILE_NAME+"-"+dbConfig.getDbName()+"-"+time+".docx";
         String res=WordUtil.exportDB2Word(getTableStructureRenderDataList(tableStructureList), path);
         return res;
     }
@@ -90,5 +94,35 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public void postHandleListTableStructure(List<TableStructure> list) {
+//        if (CommonUtil.isEmpty(list)){
+//            return;
+//        }
+//        TranslateWord translateWord = new XiaoniuTranslateWordImpl();
+//        String from="en";
+//        String to="zh";
+//        for (TableStructure tableStructure : list) {
+//            if (CommonUtil.isEmpty(tableStructure.getTableComment())){
+//                String content=tableStructure.getTableName().replace("fm_","");
+//                String tableComment = translateWord.translateWord(content, from, to);
+//                if (!CommonUtil.isEmpty(tableComment)){
+//                    tableComment=tableComment+"表";
+//                    tableStructure.setTableComment(tableComment);
+//                }
+//            }
+//            if (!CommonUtil.isEmpty(tableStructure.getTableColumnStructureList())){
+//                for (ColumnStructure columnStructure : tableStructure.getTableColumnStructureList()) {
+//                    if (CommonUtil.isEmpty(columnStructure.getColumnComment())){
+//                        String comment = translateWord.translateWord(columnStructure.getColumnName(), from, to);
+//                        if (!CommonUtil.isEmpty(comment)){
+//                            columnStructure.setColumnComment(comment);
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 }

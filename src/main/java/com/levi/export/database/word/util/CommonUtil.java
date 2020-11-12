@@ -6,6 +6,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CommonUtil {
@@ -159,6 +161,38 @@ public class CommonUtil {
         int max=Math.max(start,end);
         Random random = new Random();
         return random.nextInt(max)%(max-min+1) + min;
+    }
+
+    /**
+     * String 转date
+     *
+     * @param dateStr
+     * @param pattern
+     * @return
+     */
+    public static Date str2Date(String dateStr, String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        Date date = null;
+        try {
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
+     * 时间转字符串
+     * @param date
+     * @param pattern
+     * @return
+     */
+    public static String date2Str(Date date,String pattern) {
+        if (null == date){
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        return sdf.format(date);
     }
 
     public static void main(String[] args) {

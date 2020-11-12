@@ -1,6 +1,7 @@
 package com.levi.export.database.word.service;
 
 import com.levi.export.database.word.domain.DbConfig;
+import com.levi.export.database.word.domain.TableStructure;
 
 import java.sql.Connection;
 import java.util.List;
@@ -27,4 +28,12 @@ public interface DB2WordService {
      * @return
      */
     List<String> getDbNameList(Connection connection);
+
+    /**
+     * 后置数据
+     * @param list
+     */
+    default void postHandleListTableStructure(List<TableStructure> list){
+
+    }
 }

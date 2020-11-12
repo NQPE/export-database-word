@@ -75,6 +75,9 @@ public class JsonUtil {
     }
 
     public static JSONObject getJSONObject(String json) {
+        if (json==null){
+            return null;
+        }
         return JSON.parseObject(json);
     }
 
