@@ -172,6 +172,35 @@ public abstract class BaseDB2WordServiceImpl implements DB2WordService {
         return list;
     }
 
+    /**
+     * 获取表字段列表
+     *
+     * @param connection
+     * @param sql
+     * @return
+     */
+    protected String getTableStructureDDL(Connection connection, String sql) {
+        ResultSet rs = SqlUtil.getResultSet(connection, sql);
+        if (rs == null) {
+            return null;
+        }
+        String tableStructureDDL=null;
+        String columnLabel = null;
+        try {
+            while (rs.next()) {
+                columnLabel = "Create Table";
+                if (SqlUtil.isExistColumn(rs, columnLabel)) {
+                    tableStructureDDL=rs.getString(columnLabel);
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tableStructureDDL;
+    }
+
 
     /**
      * 得到渲染到docx的数据

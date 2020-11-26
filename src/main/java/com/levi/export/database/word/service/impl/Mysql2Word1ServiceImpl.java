@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
+public class Mysql2Word1ServiceImpl extends BaseDB2WordServiceImpl {
     /**
      * word文件名称
      */
@@ -36,6 +36,11 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
             ", column_key as columnKey, extra as columnExtra,is_nullable as columnIsNullable, column_default as columnDefault, column_comment as columnComment" +
             ",data_type as columnType,character_maximum_length as columnLength"
             + " FROM information_schema.columns WHERE table_schema = '%s' and table_name= '%s' ";
+
+    /**
+     * 查询表DDL sql
+     */
+    private static final String DB_STRUCTURE_DDL_SQL = "show create table `%s`.`%s` ;";
 
     @Override
     public Connection getConnection(DbConfig dbConfig) {
@@ -69,13 +74,17 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
             TableStructure tableStructure=tableStructureList.get(i);
             String columnStructureSql = String.format(DB_COLUMN_STRUCTURE_SQL, dbConfig.getDbName(), tableStructure.getTableName());
             List<ColumnStructure> columnStructureList = getColumnStructureList(connection, columnStructureSql);
+            //查询表的ddl语句
+            String tableDDLSql = String.format(DB_STRUCTURE_DDL_SQL, dbConfig.getDbName(), tableStructure.getTableName());
+            String tableDDL = getTableStructureDDL(connection, tableDDLSql);
+            tableStructure.setTableDDL(tableDDL);
             tableStructure.setTableColumnStructureList(columnStructureList);
             tableStructure.setTableNo(i+1+"");
         }
         postHandleListTableStructure(tableStructureList);
         String time=CommonUtil.date2Str(new Date(),"yyyyMMddHHmm");
         String path = dbConfig.getWordSavePath() + "/" + WORD_FILE_NAME+"-"+dbConfig.getDbName()+"-"+time+".docx";
-        String res=WordUtil.exportDB2Word(getTableStructureRenderDataList(tableStructureList), path);
+        String res=WordUtil.exportDB2WordByTableStructure(tableStructureList, path);
         return res;
     }
 
@@ -98,31 +107,54 @@ public class Mysql2WordServiceImpl extends BaseDB2WordServiceImpl {
 
     @Override
     public void postHandleListTableStructure(List<TableStructure> list) {
-//        if (CommonUtil.isEmpty(list)){
-//            return;
-//        }
-//        TranslateWordService translateWord = new XiaoniuTranslateWordServiceImpl();
-//        String from="en";
-//        String to="zh";
-//        for (TableStructure tableStructure : list) {
-//            if (CommonUtil.isEmpty(tableStructure.getTableComment())){
-//                String content=tableStructure.getTableName().replace("fm_","");
-//                String tableComment = translateWord.translateWord(content, from, to);
-//                if (!CommonUtil.isEmpty(tableComment)){
-//                    tableComment=tableComment+"表";
-//                    tableStructure.setTableComment(tableComment);
-//                }
-//            }
-//            if (!CommonUtil.isEmpty(tableStructure.getTableColumnStructureList())){
-//                for (ColumnStructure columnStructure : tableStructure.getTableColumnStructureList()) {
-//                    if (CommonUtil.isEmpty(columnStructure.getColumnComment())){
-//                        String comment = translateWord.translateWord(columnStructure.getColumnName(), from, to);
-//                        if (!CommonUtil.isEmpty(comment)){
-//                            columnStructure.setColumnComment(comment);
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if (CommonUtil.isEmpty(list)){
+            return;
+        }
+        TranslateWordService translateWord = new XiaoniuTranslateWordServiceImpl();
+        String from="en";
+        String to="zh";
+        for (TableStructure tableStructure : list) {
+            //设置创建时间
+            String tableCreateTime="2020-11-16";
+            tableStructure.setTableCreatTime(tableCreateTime);
+
+            if (CommonUtil.isEmpty(tableStructure.getTableComment())){
+                String content=tableStructure.getTableName().replace("fm_","");
+                String tableComment = translateWord.translateWord(content, from, to);
+                if (!CommonUtil.isEmpty(tableComment)){
+                    tableComment=tableComment+"表";
+                    tableStructure.setTableComment(tableComment);
+                }
+            }
+            if (!CommonUtil.isEmpty(tableStructure.getTableColumnStructureList())){
+                for (ColumnStructure columnStructure : tableStructure.getTableColumnStructureList()) {
+                    //格式化字段类型和长度
+                    String columnType = columnStructure.getColumnType();
+                    if (columnType.endsWith(")")){
+                        int index=columnType.indexOf("(");
+                        if (index!=-1){
+                            String lengthStr=columnType.substring(index+1,columnType.length()-1);
+                            //设置长度大小
+                            columnStructure.setColumnLength(lengthStr);
+                            //设置类型
+                            columnStructure.setColumnType(columnType.substring(0,index));
+                        }
+                    }
+                    if (CommonUtil.isEmpty(columnStructure.getColumnLength())){
+                        columnStructure.setColumnLength("null");
+                    }
+                    //格式化非空
+                    columnStructure.setColumnIsNullable(
+                            CommonUtil.equals("NO",columnStructure.getColumnIsNullable())
+                                    ?"false":"true");
+                    if (CommonUtil.isEmpty(columnStructure.getColumnComment())){
+                        String comment = translateWord.translateWord(columnStructure.getColumnName(), from, to);
+                        if (!CommonUtil.isEmpty(comment)){
+                            columnStructure.setColumnComment(comment);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

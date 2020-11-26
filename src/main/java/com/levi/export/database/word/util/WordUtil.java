@@ -1,8 +1,11 @@
 package com.levi.export.database.word.util;
 
 import com.deepoove.poi.XWPFTemplate;
+import com.deepoove.poi.config.Configure;
 import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.data.style.TableStyle;
+import com.deepoove.poi.policy.HackLoopTableRenderPolicy;
+import com.levi.export.database.word.domain.TableStructure;
 import com.levi.export.database.word.domain.TableStructureRenderData;
 
 import java.io.File;
@@ -16,7 +19,8 @@ import java.util.Map;
  * word文档工具
  */
 public class WordUtil {
-    private static final String TEMPLATE_DOSX_PATH = "/template.docx";
+//    private static final String TEMPLATE_DOSX_PATH = "/template.docx";
+    private static final String TEMPLATE_DOSX_PATH = "/template_dev.docx";
 
     /**
      * 导出数据库表结构为word
@@ -35,6 +39,47 @@ public class WordUtil {
         Map<String, Object> data = new HashMap<>();
         data.put("tableStructureList", tableStructureList);
         XWPFTemplate template = XWPFTemplate.compile(templateInputStream).render(data);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(path);
+            template.write(out);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                template.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+    }
+
+    /**
+     * 导出数据库表结构为word
+     *
+     * @param tableStructureList
+     * @param path
+     */
+    public static String exportDB2WordByTableStructure(List<TableStructure> tableStructureList, String path) {
+        if (CommonUtil.isEmpty(tableStructureList)) {
+            return "导出数据为空";
+        }
+        InputStream templateInputStream=WordUtil.class.getResourceAsStream(TEMPLATE_DOSX_PATH);
+        if (templateInputStream==null){
+            return "模板未找到";
+        }
+        HackLoopTableRenderPolicy policy = new HackLoopTableRenderPolicy();
+        Configure config = Configure.newBuilder()
+                .bind("tableColumnStructureList", policy).build();
+        Map<String, Object> data = new HashMap<>();
+        data.put("tableStructureList", tableStructureList);
+        XWPFTemplate template = XWPFTemplate.compile(templateInputStream,config).render(data);
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(path);

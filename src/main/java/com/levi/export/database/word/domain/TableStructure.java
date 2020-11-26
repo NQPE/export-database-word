@@ -39,6 +39,16 @@ public class TableStructure implements Serializable {
     private String tableNo;
 
     /**
+     * 表的ddl语句
+     */
+    private String tableDDL;
+
+    /**
+     * 表的创建时间
+     */
+    private String tableCreatTime;
+
+    /**
      * 表字段列表
      */
     List<ColumnStructure> tableColumnStructureList;
@@ -97,6 +107,22 @@ public class TableStructure implements Serializable {
 
     public void setTableNo(String tableNo) {
         this.tableNo = tableNo;
+    }
+
+    public String getTableDDL() {
+        return tableDDL;
+    }
+
+    public void setTableDDL(String tableDDL) {
+        this.tableDDL = tableDDL;
+    }
+
+    public String getTableCreatTime() {
+        return tableCreatTime;
+    }
+
+    public void setTableCreatTime(String tableCreatTime) {
+        this.tableCreatTime = tableCreatTime;
     }
 
     public List<ColumnStructure> getTableColumnStructureList() {
